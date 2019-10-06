@@ -19,6 +19,7 @@ fn main() {
                         .required(true),
                 ),
         )
+      
         .subcommand(
             SubCommand::with_name("get")
                 .about("Get the string value of a given string key")
@@ -31,18 +32,22 @@ fn main() {
         )
         .get_matches();
 
+    let mut kv_store = kvs::KvStore::new();
+
     match matches.subcommand() {
         ("set", Some(_matches)) => {
-            eprintln!("unimplemented");
-            exit(1);
+            //      println!("{:?}", _matches);
+            let key = _matches.value_of("KEY").unwrap().to_string();
+            let value = _matches.value_of("VALUE").unwrap().to_string();
+            kv_store.set(key, value);
         }
         ("get", Some(_matches)) => {
-            eprintln!("unimplemented");
-            exit(1);
+            let key = _matches.value_of("KEY").unwrap().to_string();
+            kv_store.get(key);
         }
         ("rm", Some(_matches)) => {
-            eprintln!("unimplemented");
-            exit(1);
+            let key = _matches.value_of("KEY").unwrap().to_string();
+            kv_store.remove(key)
         }
         _ => unreachable!(),
     }
